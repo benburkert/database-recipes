@@ -4,7 +4,7 @@
 #
 
 package "postgresql" do
-  version "0.8.3"
+  version "8.3.1"
   action :install
 end
 
