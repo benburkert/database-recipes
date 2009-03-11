@@ -2,9 +2,17 @@
 # Cookbook Name:: postgresql
 # Recipe:: default
 #
+if postgresql[:hard_masked]
+  execute "unmask-postgresql" do
+    command %Q{
+      mkdir -p /etc/portage
+      echo "=dev-db/postgresql-#{postgresql[:version]}" >> /etc/portage/package.unmask
+    }
+  end
+end
 
 package "postgresql" do
-  version "8.3.1"
+  version postgresql[:version]
   action :install
 end
 
