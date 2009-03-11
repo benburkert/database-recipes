@@ -1,11 +1,11 @@
 # PostgreSQL's Database Directory
-PGDATA="<%= basedir %>/data"
+PGDATA="<%= @basedir %>/data"
 
 # PostgreSQL User
-PGUSER="<%= owner %>"
+PGUSER="<%= @owner %>"
 
 # PostgreSQL Group
-PGGROUP="<%= group %>"
+PGGROUP="<%= @group %>"
 
 # Extra options to run postmaster with, e.g.:
 # -N is the maximal number of client connections
