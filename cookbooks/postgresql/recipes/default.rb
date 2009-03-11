@@ -4,8 +4,8 @@
 #
 
 directory "/db/postgresql/data" do
-  owner "postgresql"
-  group "postgresql"
+  owner "postgres"
+  group "postgres"
   mode 0755
   recursive true
 end
