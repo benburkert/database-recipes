@@ -3,6 +3,13 @@
 # Recipe:: default
 #
 
+directory "/db/postgresql" do
+  owner "postgres"
+  group "postgres"
+  mode 0755
+  recursive false
+end
+
 directory "/db/postgresql/data" do
   owner "postgres"
   group "postgres"
