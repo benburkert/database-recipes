@@ -62,7 +62,7 @@ end
 node[:postgresql][:databases].each do |database|
   execute "add-#{database}-database" do
     command %Q{
-      su - postgres -c "createdb -E=UTF8 -O #{database}"
+      su - postgres -c "createdb -E=UTF8 -O #{node[:postgresql][:db_user]} #{database}"
     }
 
     not_if "su - postgres -c \"psql -c \\\"SELECT * FROM pg_database\\\"\" | grep #{database}"
