@@ -6,7 +6,7 @@
 directory "/db/postgresql" do
   owner "postgres"
   group "postgres"
-  mode 0766
+  mode 0755
   recursive false
 end
 
