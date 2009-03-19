@@ -7,7 +7,7 @@ directory "/db/postgresql/data" do
   owner "postgres"
   group "postgres"
   mode 0755
-  recursive true
+  recursive false
 end
 
 template "/etc/conf.d/postgresql-8.3" do
