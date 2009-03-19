@@ -1,6 +1,6 @@
 require 'open-uri'
 instance_type(open('http://169.254.169.254/latest/meta-data/instance-type').gets)
-ipv4(open('http://169.254.169.254/latest/meta-data/ipv4').gets)
+ipv4(open('http://169.254.169.254/latest/meta-data/public-ipv4').gets)
 
 postgresql Mash.new unless attribute?('postgresql')
 
