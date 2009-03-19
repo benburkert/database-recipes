@@ -49,3 +49,10 @@ execute 'ensure-postgresql-is-running' do
   }
   not_if "/etc/init.d/postgresql-8.3 status | grep 'status:  started'"
 end
+
+execute 'add-database-user' do
+  command %Q{
+    su - postgres -c "createuser -S -D -R -l -i -E #{node[:owner_name]}"
+    su - postgres -c "psql -c \\"ALTER USER #{node[:owner_name]} WITH ENCRYPTED PASSWORD '#{node[:owner_pass]}'\\""
+  }
+end
