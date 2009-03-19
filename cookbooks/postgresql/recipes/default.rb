@@ -58,3 +58,13 @@ execute 'add-database-user' do
 
   not_if "su - postgres -c \"psql -c\\\"SELECT * FROM pg_roles\\\"\" | grep #{node[:owner_name]}"
 end
+
+node[:applications].each_key do |appname|
+  execute "add-#{appname}-database" do
+    command %Q{
+      su - postgres -c "createdb -E=UTF8 -O #{node[:owner_name]} #{appname}_#{node[:environment][:role]}"
+    }
+
+    not_if "su - postgres -c \"psql -c \\\"SELECT * FROM pg_database\\\"\" | grep #{appname}_#{node[:environment][:role]}"
+  end
+end
