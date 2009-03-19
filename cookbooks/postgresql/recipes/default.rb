@@ -34,3 +34,18 @@ execute 'init-postgres-database' do
 
   not_if { not Dir["/db/postgresql/data/*"].empty? }
 end
+
+execute 'add-postgresql-to-default-run-level' do
+  command %Q{
+    rc-update add postgresql-8.3 default
+  }
+
+  not_if 'rc-status | grep postgresql-8.3'
+end
+
+execute 'ensure-postgresql-is-running' do
+  command %Q{
+    /etc/init.d/postgresql-8.3 restart
+  }
+  not_if "/etc/init.d/postgresql-8.3 status | grep 'status:  started'"
+end
