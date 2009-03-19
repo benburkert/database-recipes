@@ -52,11 +52,11 @@ end
 
 execute 'add-database-user' do
   command %Q{
-    su - postgres -c "createuser -S -D -R -l -i -E #{node[:owner_name]}"
-    su - postgres -c "psql -c \\"ALTER USER #{node[:owner_name]} WITH ENCRYPTED PASSWORD '#{node[:owner_pass]}'\\""
+    su - postgres -c "createuser -S -D -R -l -i -E #{node[:postgresql][:db_user]}"
+    su - postgres -c "psql -c \\"ALTER USER #{node[:postgresql][:db_user]} WITH ENCRYPTED PASSWORD '#{node[:postgresql][:db_user]}'\\""
   }
 
-  not_if "su - postgres -c \"psql -c\\\"SELECT * FROM pg_roles\\\"\" | grep #{node[:owner_name]}"
+  not_if "su - postgres -c \"psql -c\\\"SELECT * FROM pg_roles\\\"\" | grep #{node[:postgresql][:db_user]}"
 end
 
 node[:applications].each_key do |appname|
