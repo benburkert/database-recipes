@@ -6,14 +6,14 @@
 directory "/db/postgresql" do
   owner "postgres"
   group "postgres"
-  mode 0755
+  mode 0766
   recursive false
 end
 
 directory "/db/postgresql/data" do
   owner "postgres"
   group "postgres"
-  mode 0755
+  mode 0700
   recursive false
 end
 
