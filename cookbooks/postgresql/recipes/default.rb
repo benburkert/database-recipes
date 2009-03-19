@@ -24,5 +24,6 @@ execute 'init-postgres-database' do
   command %Q{
     su - postgres -c "initdb --locale=en_US.UTF-8 -E=UNICODE /db/postgresql/data"
   }
-  #not_if "file /db/postgresql/data/blah"
+
+  not_if { not Dir["/db/postgresql/data/*"].empty? }
 end
