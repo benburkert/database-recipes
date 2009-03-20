@@ -69,6 +69,6 @@
 
 # "local" is for Unix domain socket connections only
 local   all         all                               trust
-<% for database in databases %>
-host    <%= @database %>    <%= user %>       0.0.0.0/0         md5
+<% for database in @databases %>
+host    <%= database %>    <%= @user %>       0.0.0.0/0         md5
 <% end %>
