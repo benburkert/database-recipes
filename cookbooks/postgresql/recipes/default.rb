@@ -27,7 +27,7 @@ template "/etc/conf.d/postgresql-8.3" do
             :group    => 'postgres'
 end
 
-template "/etc/conf.d/postgresql/data/postgresql.conf" do
+template "/db/postgresql/data/postgresql.conf" do
   owner 'postgresql'
   group 'postgresql'
   mode 0600
@@ -35,7 +35,7 @@ template "/etc/conf.d/postgresql/data/postgresql.conf" do
   variables node[:postgresql]['postgresql.conf']
 end
 
-template "/etc/conf.d/postgresql/data/pg_hba.conf" do
+template "/db/postgresql/data/pg_hba.conf" do
   owner 'postgresql'
   group 'postgresql'
   mode 0600
