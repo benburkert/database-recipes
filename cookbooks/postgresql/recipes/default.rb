@@ -28,16 +28,16 @@ template "/etc/conf.d/postgresql-8.3" do
 end
 
 template "/db/postgresql/data/postgresql.conf" do
-  owner 'postgresql'
-  group 'postgresql'
+  owner 'postgres'
+  group 'postgres'
   mode 0600
   source "postgresql.conf.erb"
   variables node[:postgresql]['postgresql.conf']
 end
 
 template "/db/postgresql/data/pg_hba.conf" do
-  owner 'postgresql'
-  group 'postgresql'
+  owner 'postgres'
+  group 'postgres'
   mode 0600
   source "pg_hba.conf.erb"
   variables :databases  => node[:postgresql][:databases],
@@ -45,8 +45,8 @@ template "/db/postgresql/data/pg_hba.conf" do
 end
 
 directory "/mnt/pg_xlog" do
-  owner 'postgresql'
-  group 'postgresql'
+  owner 'postgres'
+  group 'postgres'
   mode 0700
   recursive false
 end
