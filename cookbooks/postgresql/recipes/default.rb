@@ -27,8 +27,6 @@ template "/etc/conf.d/postgresql-8.3" do
             :group    => 'postgres'
 end
 
-template "/db/postgresql/data/"
-
 template "/etc/conf.d/postgresql/data/postgresql.conf" do
   owner 'postgresql'
   group 'postgresql'
