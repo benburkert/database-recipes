@@ -52,16 +52,9 @@ template "/db/postgresql/data/pg_hba.conf" do
             :user       => node[:postgresql][:db_user]
 end
 
-directory "/mnt/pg_xlog" do
-  owner 'postgres'
-  group 'postgres'
-  mode 0700
-  recursive false
-end
-
 execute 'symlink-pg_xlog' do
   command %Q{
-    mv /db/postgresql/data/pg_xlog /mnt/pg_xlog
+    mv /db/postgresql/data/pg_xlog /mnt
     ln -s /mnt/pg_xlog /db/postgresql/data/pg_xlog
   }
   not_if "ls -al /db/postgresql/data/pg_xlog | grep '/db/postgresql/data/pg_xlog -> /mnt/pg_xlog'"
