@@ -54,7 +54,7 @@ directory "/mnt/pg_xlog" do
 end
 
 execute 'symlink-pg_xlog' do
-  commad %Q{
+  command %Q{
     ln -s /mnt/pg_xlog /db/postgresql/data/pg_xlog
   }
   not_if "ls -al /db/postgresql/data/pg_xlog | grep '/db/postgresql/data/pg_xlog -> /mnt/pg_xlog'"
