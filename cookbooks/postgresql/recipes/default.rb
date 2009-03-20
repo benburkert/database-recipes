@@ -27,6 +27,14 @@ template "/etc/conf.d/postgresql-8.3" do
             :group    => 'postgres'
 end
 
+execute 'init-postgres-database' do
+  command %Q{
+    su - postgres -c "initdb --locale=en_US.UTF-8 -E=UNICODE /db/postgresql/data"
+  }
+
+  not_if { not Dir["/db/postgresql/data/*"].empty? }
+end
+
 template "/db/postgresql/data/postgresql.conf" do
   owner 'postgres'
   group 'postgres'
@@ -53,17 +61,10 @@ end
 
 execute 'symlink-pg_xlog' do
   command %Q{
+    rm -rf /db/postgresql/data/pg_xlog
     ln -s /mnt/pg_xlog /db/postgresql/data/pg_xlog
   }
   not_if "ls -al /db/postgresql/data/pg_xlog | grep '/db/postgresql/data/pg_xlog -> /mnt/pg_xlog'"
-end
-
-execute 'init-postgres-database' do
-  command %Q{
-    su - postgres -c "initdb --locale=en_US.UTF-8 -E=UNICODE /db/postgresql/data"
-  }
-
-  not_if { not Dir["/db/postgresql/data/*"].empty? }
 end
 
 execute 'add-postgresql-to-default-run-level' do
