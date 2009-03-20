@@ -10,7 +10,7 @@ postgresql[:databases]  = applications.keys.map {|a| "#{a}_#{environment[:role]}
 
 case instance_type
 when 'm1.large' #standalone db server
-  postgresql[:config] ||= Mash.new
+  postgresql['postgresql.conf'] ||= Mash.new
 
   postgresql['postgresql.conf'][:listen_addresses]     = ipv4
   postgresql['postgresql.conf'][:port]                 = 5432
