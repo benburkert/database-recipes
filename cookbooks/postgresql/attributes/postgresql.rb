@@ -4,8 +4,6 @@ ipv4(open('http://169.254.169.254/latest/meta-data/public-ipv4').gets)
 
 postgresql Mash.new unless attribute?('postgresql')
 
-postgresql[:db_user]    = @node[:owner_name]
-postgresql[:db_pass]    = @node[:owner_pass]
 postgresql[:databases]  = applications.keys.map {|a| "#{a}_#{environment[:role]}"}
 
 case instance_type
@@ -22,7 +20,7 @@ when 'm1.large' #standalone db server
   postgresql['postgresql.conf'][:vacuum_cost_delay]    = 200
   postgresql['postgresql.conf'][:effective_cache_size] = 5120 #7.5GB * 2/3
   postgresql['postgresql.conf'][:random_page_cost]     = "3.0"
-             'postgresql.conf'
+
   postgresql['postgresql.conf'][:autovacuum_vacuum_threshold]      = 400
   postgresql['postgresql.conf'][:autovacuum_vacuum_scale_factor]   = "0.05"
   postgresql['postgresql.conf'][:autovacuum_analyze_threshold]     = 200

@@ -3,6 +3,9 @@
 # Recipe:: default
 #
 
+node[:postgresql][:db_user]    = node[:owner_name]
+node[:postgresql][:db_pass]    = node[:owner_pass]
+
 execute 'set-shared-buffer-space' do
   command %Q{
     echo #{node[:postgresql]['postgresql.conf'][:shared_buffer_space]} > /proc/sys/kernel/shmmax
