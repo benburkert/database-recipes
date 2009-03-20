@@ -61,7 +61,7 @@ end
 
 execute 'symlink-pg_xlog' do
   command %Q{
-    mv /db/postgresql/data/pg_xlog /mnt_pg_xlog
+    mv /db/postgresql/data/pg_xlog /mnt/pg_xlog
     ln -s /mnt/pg_xlog /db/postgresql/data/pg_xlog
   }
   not_if "ls -al /db/postgresql/data/pg_xlog | grep '/db/postgresql/data/pg_xlog -> /mnt/pg_xlog'"
