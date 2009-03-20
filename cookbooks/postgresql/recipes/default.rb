@@ -3,6 +3,14 @@
 # Recipe:: default
 #
 
+execute 'set-shared-buffer-space' do
+  command %Q{
+    echo #{node[:postgresql]['postgresql.conf'][:shared_buffer_space]} > /proc/sys/kernel/shmmax
+  }
+
+  not_if "cat /proc/sys/kernel/shmmax | grep #{node[:postgresql]['postgresql.conf'][:shared_buffer_space]}"
+end
+
 directory "/db/postgresql" do
   owner "postgres"
   group "postgres"
@@ -78,7 +86,7 @@ end
 execute 'add-database-user' do
   command %Q{
     su - postgres -c "createuser -S -D -R -l -i -E #{node[:postgresql][:db_user]}"
-    su - postgres -c "psql -c \\"ALTER USER #{node[:postgresql][:db_user]} WITH ENCRYPTED PASSWORD '#{node[:postgresql][:db_user]}'\\""
+    su - postgres -c "psql -c \\"ALTER USER #{node[:postgresql][:db_user]} WITH ENCRYPTED PASSWORD '#{node[:postgresql][:db_pass]}'\\""
   }
 
   not_if "su - postgres -c \"psql -c\\\"SELECT * FROM pg_roles\\\"\" | grep #{node[:postgresql][:db_user]}"
