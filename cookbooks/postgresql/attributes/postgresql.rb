@@ -4,8 +4,8 @@ ipv4(open('http://169.254.169.254/latest/meta-data/public-ipv4').gets)
 
 postgresql Mash.new unless attribute?('postgresql')
 
-postgresql[:db_user]    = node[:owner_name]
-postgresql[:db_pass]    = node[:owner_pass]
+postgresql[:db_user]    = @node[:owner_name]
+postgresql[:db_pass]    = @node[:owner_pass]
 postgresql[:databases]  = applications.keys.map {|a| "#{a}_#{environment[:role]}"}
 
 case instance_type
