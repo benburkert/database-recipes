@@ -27,6 +27,39 @@ template "/etc/conf.d/postgresql-8.3" do
             :group    => 'postgres'
 end
 
+template "/db/postgresql/data/"
+
+template "/etc/conf.d/postgresql/data/postgresql.conf" do
+  owner 'postgresql'
+  group 'postgresql'
+  mode 0600
+  source "postgresql.conf.erb"
+  variables node[:postgresql]['postgresql.conf']
+end
+
+template "/etc/conf.d/postgresql/data/pg_hba.conf" do
+  owner 'postgresql'
+  group 'postgresql'
+  mode 0600
+  source "pg_hba.conf.erb"
+  variables :databases  => node[:postgresql][:databases],
+            :user       => node[:postgresql][:db_user]
+end
+
+directory "/mnt/pg_xlog" do
+  owner 'postgresql'
+  group 'postgresql'
+  mode 0700
+  recursive false
+end
+
+execute 'symlink-pg_xlog' do
+  commad %Q{
+    ln -s /mnt/pg_xlog /db/postgresql/data/pg_xlog
+  }
+  not_if "ls -al /db/postgresql/data/pg_xlog | grep '/db/postgresql/data/pg_xlog -> /mnt/pg_xlog'"
+end
+
 execute 'init-postgres-database' do
   command %Q{
     su - postgres -c "initdb --locale=en_US.UTF-8 -E=UNICODE /db/postgresql/data"
