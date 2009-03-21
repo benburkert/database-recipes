@@ -8,10 +8,10 @@ node[:postgresql][:db_pass]    = node[:owner_pass]
 
 execute 'set-shared-buffer-space' do
   command %Q{
-    echo #{node[:postgresql]['postgresql.conf'][:shared_buffer_space]} > /proc/sys/kernel/shmmax
+    echo #{node[:postgresql][:shared_buffer_space]} > /proc/sys/kernel/shmmax
   }
 
-  not_if "cat /proc/sys/kernel/shmmax | grep #{node[:postgresql]['postgresql.conf'][:shared_buffer_space]}"
+  not_if "cat /proc/sys/kernel/shmmax | grep #{node[:postgresql][:shared_buffer_space]}"
 end
 
 directory "/db/postgresql" do
@@ -77,6 +77,14 @@ execute 'add-postgresql-to-default-run-level' do
   }
 
   not_if 'rc-status | grep postgresql-8.3'
+end
+
+execute 'stop-mysql' do
+  command %Q{
+    /etc/init.d/mysql stop
+  }
+
+  not_if "ps ax | grep mysqld | grep -v grep"
 end
 
 execute 'ensure-postgresql-is-running' do

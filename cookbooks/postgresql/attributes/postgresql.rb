@@ -8,11 +8,12 @@ postgresql[:databases]  = applications.keys.map {|a| "#{a}_#{environment[:role]}
 
 case instance_type
 when 'm1.large' #standalone db server
+  postgresql[:shared_buffer_space]  = 402653184 #384MB's
+
   postgresql['postgresql.conf'] ||= Mash.new
 
   postgresql['postgresql.conf'][:listen_addresses]     = '*' #ifconfig lists nothing about the ipv4 address
   postgresql['postgresql.conf'][:port]                 = 5432
-  postgresql['postgresql.conf'][:shared_buffer_space]  = 402653184 #384MB's
   postgresql['postgresql.conf'][:shared_buffers]       = 320
   postgresql['postgresql.conf'][:work_mem]             = 32
   postgresql['postgresql.conf'][:maintenance_work_mem] = 256
@@ -25,5 +26,4 @@ when 'm1.large' #standalone db server
   postgresql['postgresql.conf'][:autovacuum_vacuum_scale_factor]   = "0.05"
   postgresql['postgresql.conf'][:autovacuum_analyze_threshold]     = 200
   postgresql['postgresql.conf'][:autovacuum_analyze_scale_factor]  = "0.01"
-
 end
