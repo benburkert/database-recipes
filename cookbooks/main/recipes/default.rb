@@ -1,13 +1,12 @@
-execute "testing" do
-  command %Q{
-    echo "i ran at #{Time.now}" >> /root/cheftime
-  }
-end
-
 # uncomment if you want to run couchdb recipe
 # require_recipe "couchdb"
 
 # uncomment to turn your instance into an integrity CI server
 #require_recipe "integrity"
 
-require_recipe "postgresql"
+case node[:instance_type]
+when 'c1.medium'  #app server
+  require_recipe "haproxy"
+when 'm1.large'   #database server
+  require_recipe "postgresql"
+end
