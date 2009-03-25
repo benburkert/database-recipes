@@ -31,20 +31,7 @@ execute 'ensure-haproxy-is-running' do
 end
 
 execute 'change-nginx-upstream-port' do
-  command do
-    File.open("/etc/nginx/servers/#{node[:haproxy][:application]}.conf", 'r+') do |f|
-      lines = f.read
-      lines.gsub!(/server 127.0.0.1:#{node[:haproxy][:ports].first}/, "server 127.0.0.1:#{node[:haproxy][:upstream_port]}")
-      node[:haproxy][:ports].each do |port|
-        lines.gsub!(/server 127.0.0.1:#{port}/, '')
-      end
-      f.rewind
-      f.write(lines)
-      f.flush
-    end
-  end
-
-  not_if "grep 'server 127.0.0.1:#{node[:haproxy][:upstream_port]}' < /etc/nginx/servers/#{node[:haproxy][:application]}.conf"
+  #TODO: Fix this when it's easier to do
 end
 
 execute 'restart-nginx' do
