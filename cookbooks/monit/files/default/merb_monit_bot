@@ -1,0 +1,195 @@
+#!/bin/bash
+#================================================================================
+# /engineyard/bin/monit_merb_bot
+#================================================================================
+# This script controls a Merb bot service
+#
+# Do not forget to ensure this script is executable: 
+#   $ chmod a+x /engineyard/bin/monit_merb_bot
+#================================================================================
+
+export PATH=/bin:/usr/bin:/usr/local/bin:/usr/local:/opt/bin:$PATH
+
+usage() {
+cat <<END
+
+Usage: $0 <application> <bot_name> <action> <environment> [options]
+
+  application - the name of the merb application being controlled
+
+  bot_name - the name of the merb bot
+
+  action - the task being performed.  This can be one of:
+    - start
+    - stop
+    - restart
+
+  The action determines what further arguments and options are allowed.  The register_worker and restart worker take a numberic argument for the socket or port id of the worker.  The start_master action takes the following options:
+
+    -r run_script
+    	The bot run script
+
+  There are also the following universal options:
+
+    -h help - Print this.
+
+  Notes:
+
+    * indicates the default value.
+
+END
+
+  exit 1
+}
+
+#
+# Utility functions
+# 
+
+log() {
+  reason=${MONIT_EVENT-Invoked}
+  msg="[`date +"%Y/%m/%d %H:%M:%S"` - ${application}/${environment}-${bot_name}:$reason] $1"
+  echo $msg >> $monit_log_file
+  echo $msg >&2
+}
+
+get_pid() {
+  
+  # Check for pid_file
+  pid=''
+  if [ -e $pid_dir/$pid_file ] ; then
+    pid=`cat $pid_dir/$pid_file`
+    if [ ! -z "$pid" ] && [ ! -d "/proc/$pid" ] ; then
+      pid=""
+      rm $pid_dir/$pid_file
+    fi
+  fi
+
+  echo "$pid"
+}
+
+start_merb() {
+  # Get the user and group info, and set up environmental variables
+  user=`stat -c"%U" /data/$application/current`
+  group=`stat -c"%G" /data/$application/current`
+  INLINEDIR="/data/$application/.ruby_inline" ; export INLINEDIR
+  HOME=`eval "dirname ~${user}/."`; export HOME
+
+  # Check if pid already exists
+  old_pid=`get_pid`
+  if [ ! -z "$old_pid" ] ; then
+    log "Killing off pre-existing merb bot: $old_pid" 
+    kill -INT "$old_pid"
+  fi
+
+  # clean up existing left-over pid files
+  rm -rf "$pid_dir/$pid_file"
+
+  cd $app_dir
+  log "Starting merb bot $bot_name process for $application in the $environment environment."
+  command="$merb --name "$process_name" -d -u $user -G $group -L $app_log_file -e $environment -m $app_dir -P '$pid_dir/$pid_file' -r $run_script"
+
+  log "$command"
+  eval "$command"
+
+  timeout=10
+  while [ ! -f "$pid_dir/$pid_file" ] || [ -z `get_pid` ] || [ "`get_pid`" != "`cat  "$pid_dir/$pid_file"`" ] ; do
+    sleep 1
+    timeout=$(( $timeout - 1 ))
+    if [ $timeout -le 0 ] ; then
+      log "FATAL: bot process did not drop a correct pid file within 10 seconds"
+      exit 1
+    fi
+  done
+  
+  exit 0
+}
+
+stop_merb() {
+  cd $app_dir
+  pid=`get_pid`
+  if [ -z "$pid" ] ; then
+    log "FATAL: Cannot stop merb bot process for $application $environment: process not found"
+    exit 1
+  fi
+  kill -INT "$pid"
+  exit 0
+}
+
+# -----------------------------------------------------------------------------
+# Main Logic
+# -----------------------------------------------------------------------------
+
+# Must be run as root
+if [ "`whoami`" != "root" ]; then
+  logger -t `basename $0` -s "Must be run as root" 
+  exit 1
+fi
+
+# Set defaults
+
+application=$1
+bot_name=$2
+action=$3
+environment=$4
+lock="$0  *$application  *$bot_name  *$action *$environment"
+shift 2
+
+if [ "$application" = "" ] || [ "$bot_name" = "" ] || [ "$action" = "" ] || [ "$application" = "-h" ] || [ "$bot_name" = "-h" ] || [ "$action" = "-h" ]; then
+  usage
+fi
+
+run_script="/data/$application/current/script/$bot_name.rb"
+
+# Parsing the options.
+while getopts "r:e:h" option ; do
+  case $option in
+    r) run_script=$OPTARG ;;
+    e) environment=$OPTARG ;;
+    ?) usage ;;
+  esac
+done
+
+shift $(($OPTIND - 1))
+
+# Setup control variables
+log_dir="/var/log/engineyard/$application"
+monit_log_file="$log_dir/monit.control.log"
+app_dir="/data/$application/current"
+app_log_file="$app_dir/log/$environment.$bot_name.log"
+pid_dir=$log_dir
+pid_file="$application-$environment-$bot_name.pid"
+process_name="${application}_${environment}_$bot_name"
+pinger="/engineyard/bin/port_ping"
+merb="/usr/bin/merb"
+if [ -e $app_dir/bin/merb ] ; then
+  merb="$app_dir/bin/merb"
+fi
+
+
+mkdir -p $log_dir && touch $monit_log_file
+
+# Exit if the application does not exist.
+if [ ! -d "$app_dir" ]; then
+  log "$app_dir does not exist."
+  usage
+fi
+
+# Set the pids.
+case "$action" in
+  start)
+    start_merb
+    ;;
+  stop) 
+    stop_merb
+    ;;
+  restart)
+    stop_merb
+    start_merb
+    ;;
+  *)
+    usage
+    ;;
+esac
+
+exit 0
