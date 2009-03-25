@@ -30,10 +30,6 @@ execute 'ensure-haproxy-is-running' do
   not_if "/etc/init.d/haproxy status | grep 'status:  started'"
 end
 
-execute 'change-nginx-upstream-port' do
-  #TODO: Fix this when it's easier to do
-end
-
 execute 'restart-nginx' do
   command %Q{
     /etc/init.d/nginx restart
