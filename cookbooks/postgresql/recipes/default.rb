@@ -24,7 +24,7 @@ end
 
 gem_package 'benburkert-ey-backup' do
   action :install
-  version '0.0.3.1'
+  version '0.0.3.2'
   source "http://gems.github.com"
 end
 
