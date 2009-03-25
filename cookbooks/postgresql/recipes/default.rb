@@ -14,6 +14,20 @@ execute 'set-shared-buffer-space' do
   not_if "cat /proc/sys/kernel/shmmax | grep #{node[:postgresql][:shared_buffer_space]}"
 end
 
+execute 'generate-.postgresql.backups.yml-file' do
+  command %Q{
+    mv /etc/.mysql.backups.yml /etc/.postgresql.backups.yml
+  }
+
+  not_if 'ls /etc/.postgresql.backups.yml'
+end
+
+gem_package 'benburkert-ey-backup' do
+  action :install
+  version '0.0.3.1'
+  source "http://gems.github.com"
+end
+
 directory "/db/postgresql" do
   owner "postgres"
   group "postgres"
