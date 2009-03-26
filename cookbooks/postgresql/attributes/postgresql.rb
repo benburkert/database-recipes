@@ -22,7 +22,7 @@ postgresql['postgresql.conf'][:port]              = 5432
 # Optimize'able stuff
 postgresql[:shared_buffer_space]                      = (bytes * 0.10).to_i #10% of the total RAM
 postgresql['postgresql.conf'][:shared_buffers]        = (kbs * 0.10).to_i   #100% of the buffer space
-postgresql['postgresql.conf'][:effective_cache_size]  = (kbs * 0.75)        #75% of the total RAM
+postgresql['postgresql.conf'][:effective_cache_size]  = (kbs * 0.75).to_i   #75% of the total RAM
 
 postgresql['postgresql.conf'][:maintenance_work_mem]  = 384 #384MB
 postgresql['postgresql.conf'][:work_mem]              = 64  #64MB
