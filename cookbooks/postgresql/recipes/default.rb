@@ -8,10 +8,11 @@ node[:postgresql][:db_pass]    = node[:owner_pass]
 
 execute 'set-shared-buffer-space' do
   command %Q{
-    echo #{node[:postgresql][:shared_buffer_space]} > /proc/sys/kernel/shmmax
+    sysctl -w kernel.shmmax=#{node[:postgresql][:shared_buffer_space]}
+    sysctl -w vm.overcommit_memory=2
   }
 
-  not_if "cat /proc/sys/kernel/shmmax | grep #{node[:postgresql][:shared_buffer_space]}"
+  not_if "sysctl -n kernel.shmmax | grep #{node[:postgresql][:shared_buffer_space]}"
 end
 
 execute 'generate-.postgresql.backups.yml-file' do
