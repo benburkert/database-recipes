@@ -8,6 +8,6 @@ case node[:instance_type]
 when 'c1.medium'  #app server
   require_recipe "haproxy"
   require_recipe "monit"
-when 'm1.large'   #database server
+when 'm1.large', 'm1.xlarge'   #database server
   require_recipe "postgresql"
 end
