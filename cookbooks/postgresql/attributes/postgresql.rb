@@ -21,8 +21,8 @@ postgresql['postgresql.conf'][:listen_addresses]  = '*' #ifconfig lists nothing 
 postgresql['postgresql.conf'][:port]              = 5432
 
 # Optimize'able stuff
-postgresql[:shared_buffer_space]                      = (bytes * 0.10).to_i #10% of the total RAM
-postgresql['postgresql.conf'][:shared_buffers]        = (mbs * 0.10).to_i   #100% of the buffer space
+postgresql[:shared_buffer_space]                      = (bytes * 0.11).to_i #11% of the total RAM
+postgresql['postgresql.conf'][:shared_buffers]        = (mbs * 0.10).to_i   #91% of the buffer space
 postgresql['postgresql.conf'][:effective_cache_size]  = (mbs * 0.75).to_i   #75% of the total RAM
 
 postgresql['postgresql.conf'][:maintenance_work_mem]  = 384 #384MB
