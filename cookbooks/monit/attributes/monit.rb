@@ -5,7 +5,6 @@ monit[:worker_pidfile]  = "#{@attribute[:shared_path]}/pids/#{@attribute[:applic
 monit[:script_pid]      = "#{@attribute[:shared_path]}/pids/#{@attribute[:application]}.#{@attribute[:environment]}.script.pid"
 monit[:master_log]      = "#{@attribute[:shared_path]}/logs/#{@attribute[:application]}.#{@attribute[:environment]}.mongrel.log"
 monit[:script_log]      = "#{@attribute[:shared_path]}/logs/#{@attribute[:application]}.#{@attribute[:environment]}.script.log"
-script_log
 
 monit[:application] = @attribute[:application]
 monit[:environment] = @attribute[:environment]
