@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 
-execute "rm-mongrel_merb.#{node[:monit][:application]}.monitrc-file" do
+execute "rm-mongrel_merb.*.monitrc-file" do
   command %Q{
     rm /etc/monit.d/rm-mongrel_merb.#{node[:monit][:application]}.monitrc
   }
@@ -11,7 +11,7 @@ execute "rm-mongrel_merb.#{node[:monit][:application]}.monitrc-file" do
   not_if { not File.exists? "/etc/monit.d/rm-mongrel_merb.#{node[:monit][:application]}.monitrc"}
 end
 
-template "/etc/monit.d/merb_mongrels.#{node[:monit][:application]}.monitrc" do
+template "/etc/monit.d/merb_mongrels.*.monitrc" do
   owner 'root'
   group 'root'
   mode 0644
@@ -19,7 +19,7 @@ template "/etc/monit.d/merb_mongrels.#{node[:monit][:application]}.monitrc" do
   variables(node[:monit])
 end
 
-template "/etc/monit.d/merb_script.#{node[:monit][:application]}.monitrc" do
+template "/etc/monit.d/merb_script.*.monitrc" do
   owner 'root'
   group 'root'
   mode 0644

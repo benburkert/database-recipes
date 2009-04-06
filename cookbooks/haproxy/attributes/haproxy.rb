@@ -1,4 +1,4 @@
-haproxy Mash.new unless attribute?('haproxy')
+haproxy = Mash.new unless attribute?('haproxy')
 
 haproxy[:user]        = @attribute[:user]
 haproxy[:password]    = @attribute[:password]
