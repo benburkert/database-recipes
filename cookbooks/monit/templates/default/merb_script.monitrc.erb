@@ -1,0 +1,6 @@
+# /etc/monit.d/merb.mashtags.monitrc
+check process merb_<%= @application %>_script
+  with pidfile <%= @script_pid %>
+  start program = "<%= @current_path %>/bin/merb --name <%= @application %>_<%= @script_name %>_<%= @environment %> -d -u <%= @user %> -G <%= @group %> -L <%= @script_log %> -e <%= @environment %> -m <%= @current_path %> -P '<%= @script_pid %>' -p <%= @script_port %> -r <%= @script_path %>"
+  stop program = "<%= @current_path %>/bin/merb -K <%= @script_port %>"
+  group <%= @application %>

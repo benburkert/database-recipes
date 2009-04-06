@@ -1,9 +1,8 @@
 haproxy Mash.new unless attribute?('haproxy')
 
-haproxy[:user]        = @attribute[:users].first[:username]
-haproxy[:password]    = @attribute[:users].first[:password]
-haproxy[:application] = @attribute[:applications].keys.first
+haproxy[:user]        = @attribute[:user]
+haproxy[:password]    = @attribute[:password]
+haproxy[:application] = @attribute[:application]
 
-# TODO: replace this with recipes('nginx') in the future
-haproxy[:upstream_port] = 4999
-haproxy[:ports]         = 5000..5004
+haproxy[:upstream_port] = @attribute[:upstream_port]
+haproxy[:ports]         = @attribute[:ports]

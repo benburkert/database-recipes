@@ -5,9 +5,9 @@ global
 
 defaults
   mode              http
-  clitimeout        60000
-  srvtimeout        30000
-  timeout connect   4000
+  timeout client    10s
+  srvtimeout        3s
+  timeout connect   20ms
 
   option            httpclose
   option            abortonclose

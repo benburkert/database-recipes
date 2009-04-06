@@ -3,11 +3,32 @@
 # Recipe:: default
 #
 
-remote_file "/engineyard/bin/monit_merb_bot" do
-  source "merb_monit_bot"
-  owner "root"
-  group "root"
-  mode 0755
+execute "rm-mongrel_merb.#{node[:monit][:application]}.monitrc-file" do
+  command %Q{
+    rm /etc/monit.d/rm-mongrel_merb.#{node[:monit][:application]}.monitrc
+  }
+
+  not_if { not File.exists? "/etc/monit.d/rm-mongrel_merb.#{node[:monit][:application]}.monitrc"}
 end
 
-#TODO: generate the monitrc file
+template "/etc/monit.d/merb_mongrels.#{node[:monit][:application]}.monitrc" do
+  owner 'root'
+  group 'root'
+  mode 0644
+  source "merb_mongrel.monitrc.erb"
+  variables(node[:monit])
+end
+
+template "/etc/monit.d/merb_script.#{node[:monit][:application]}.monitrc" do
+  owner 'root'
+  group 'root'
+  mode 0644
+  source "merb_script.monitrc.erb"
+  variables(node[:monit])
+end
+
+execute "reload-monit" do
+  command %Q{
+    /usr/bin/monit reload
+  }
+end
