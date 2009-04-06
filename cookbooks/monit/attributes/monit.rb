@@ -1,4 +1,4 @@
-monit = Mash.new unless attribute?('monit')
+monit Mash.new unless attribute?('monit')
 
 monit[:master_pidfile]  = "#{@attribute[:shared_path]}/pids/#{@attribute[:application]}.#{@attribute[:environment]}.main.pid"
 monit[:worker_pidfile]  = "#{@attribute[:shared_path]}/pids/#{@attribute[:application]}.#{@attribute[:environment]}.%s.pid"
