@@ -9,7 +9,7 @@ haproxy Mash.new unless attribute?('haproxy')
 @attribute[:ports]          = 5001..5005
 @attribute[:current_path]   = "/data/#{@attribute[:application]}/current"
 @attribute[:shared_path]    = "/data/#{@attribute[:application]}/shared"
-@attribute[:environment]    = @attribute[:environment][:role]
+@attribute[:env]    = @attribute[:environment][:role]
 
 haproxy[:user]        = @attribute[:user]
 haproxy[:password]    = @attribute[:password]

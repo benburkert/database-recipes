@@ -9,16 +9,16 @@ monit Mash.new unless attribute?('monit')
 @attribute[:ports]          = 5001..5005
 @attribute[:current_path]   = "/data/#{@attribute[:application]}/current"
 @attribute[:shared_path]    = "/data/#{@attribute[:application]}/shared"
-@attribute[:environment]    = @attribute[:environment][:role]
+@attribute[:env]            = @attribute[:environment][:role]
 
-monit[:master_pidfile]  = "#{@attribute[:shared_path]}/pids/#{@attribute[:application]}.#{@attribute[:environment]}.main.pid"
-monit[:worker_pidfile]  = "#{@attribute[:shared_path]}/pids/#{@attribute[:application]}.#{@attribute[:environment]}.%s.pid"
-monit[:script_pid]      = "#{@attribute[:shared_path]}/pids/#{@attribute[:application]}.#{@attribute[:environment]}.script.pid"
-monit[:master_log]      = "#{@attribute[:shared_path]}/logs/#{@attribute[:application]}.#{@attribute[:environment]}.mongrel.log"
-monit[:script_log]      = "#{@attribute[:shared_path]}/logs/#{@attribute[:application]}.#{@attribute[:environment]}.script.log"
+monit[:master_pidfile]  = "#{@attribute[:shared_path]}/pids/#{@attribute[:application]}.#{@attribute[:env]}.main.pid"
+monit[:worker_pidfile]  = "#{@attribute[:shared_path]}/pids/#{@attribute[:application]}.#{@attribute[:env]}.%s.pid"
+monit[:script_pid]      = "#{@attribute[:shared_path]}/pids/#{@attribute[:application]}.#{@attribute[:env]}.script.pid"
+monit[:master_log]      = "#{@attribute[:shared_path]}/logs/#{@attribute[:application]}.#{@attribute[:env]}.mongrel.log"
+monit[:script_log]      = "#{@attribute[:shared_path]}/logs/#{@attribute[:application]}.#{@attribute[:env]}.script.log"
 
 monit[:application] = @attribute[:application]
-monit[:environment] = @attribute[:environment]
+monit[:environment] = @attribute[:env]
 monit[:current_path] = @attribute[:current_path]
 monit[:user] = @attribute[:user]
 monit[:group] = @attribute[:group]
