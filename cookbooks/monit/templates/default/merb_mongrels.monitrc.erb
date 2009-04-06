@@ -1,6 +1,0 @@
-# /etc/monit.d/merb.mashtags.monitrc
-check process merb_<%= @application %>_master
-  with pidfile <%= @master_pidfile %>
-  start program = "<%= @current_path %>/bin/merb --name <%= @application %>_<%= @environment %> -d -u <%= @user %> -G <%= @group %> -a mongrel -L <%= @master_log %> -e <%= @environment %> -m <%= @current_path %> -c <%= @ports.to_a.size %> -P '<%= @worker_pidfile %>' -p <%= @ports.first %>"
-  stop program = "<%= @current_path %>/bin/merb -K all"
-  group <%= @application %>

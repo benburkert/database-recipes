@@ -1,0 +1,5 @@
+check process merb_mashtags_master
+  with pidfile /var/log/engineyard/mashtags/mashtags.production.master.pid
+  start program = "/data/mashtags/current/bin/start_mongrels
+  stop program = "/data/mashtags/current/bin/merb -K all"
+  group mashtags
