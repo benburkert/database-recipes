@@ -1,5 +1,16 @@
 monit Mash.new unless attribute?('monit')
 
+@attribute[:user]         = @attribute[:users].first[:username]
+@attribute[:group]        = @attribute[:users].first[:username]
+@attribute[:password]     = @attribute[:users].first[:password]
+@attribute[:application]  = @attribute[:applications].keys.first
+
+@attribute[:upstream_port]  = 5000
+@attribute[:ports]          = 5001..5005
+@attribute[:current_path]   = "/data/#{@attribute[:application]}/current"
+@attribute[:shared_path]    = "/data/#{@attribute[:application]}/shared"
+@attribute[:environment]    = @attribute[:environment][:role]
+
 monit[:master_pidfile]  = "#{@attribute[:shared_path]}/pids/#{@attribute[:application]}.#{@attribute[:environment]}.main.pid"
 monit[:worker_pidfile]  = "#{@attribute[:shared_path]}/pids/#{@attribute[:application]}.#{@attribute[:environment]}.%s.pid"
 monit[:script_pid]      = "#{@attribute[:shared_path]}/pids/#{@attribute[:application]}.#{@attribute[:environment]}.script.pid"
