@@ -23,7 +23,7 @@ monit[:current_path] = @attribute[:current_path]
 monit[:user] = @attribute[:user]
 monit[:group] = @attribute[:group]
 
-
+monit[:ports]       = @attribute[:ports]
 monit[:script_name] = "evented_bot"
 monit[:script_path] = "#{monit[:current_path]}/script/evented_bot.rb"
 monit[:script_port] = @attribute[:ports].last + 1
