@@ -8,6 +8,6 @@ instance_type(open('http://169.254.169.254/latest/meta-data/instance-type').gets
 
 @attribute[:upstream_port]  = 5000
 @attribute[:ports]          = 5001..5005
-@attribute[:current_path]   = "/data/#{@atribute[:application]}/current"
-@attribute[:shared_path]    = "/data/#{@atribute[:application]}/shared"
+@attribute[:current_path]   = "/data/#{@attribute[:application]}/current"
+@attribute[:shared_path]    = "/data/#{@attribute[:application]}/shared"
 @attribute[:environment]    = @attribute[:environment][:role]
