@@ -120,7 +120,7 @@ execute 'kill-monit' do
     killall -9 monit
   }
 
-  not_if 'ps auxww | grep "monit" | grep -v "grep"'
+  only_if 'ps auxww | grep "monit" | grep -v "grep"'
 end
 
 execute 'ensure-postgresql-is-running' do
