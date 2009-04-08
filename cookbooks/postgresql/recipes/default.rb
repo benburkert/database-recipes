@@ -119,6 +119,8 @@ execute 'kill-monit' do
   command %Q{
     killall -9 monit
   }
+
+  not_if 'ps auxww | grep "monit" | grep -v "grep"'
 end
 
 execute 'ensure-postgresql-is-running' do
