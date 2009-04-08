@@ -5,7 +5,7 @@
 
 execute "rm-mongrel_merb.#{node[:monit][:application]}.monitrc-file" do
   command %Q{
-    rm /etc/monit.d/rm-mongrel_merb.#{node[:monit][:application]}.monitrc
+    rm /etc/monit.d/mongrel_merb.#{node[:monit][:application]}.monitrc
   }
 end
 
