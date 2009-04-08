@@ -117,7 +117,7 @@ end
 
 execute 'kill-monit' do
   command %Q{
-    monit quit
+    killall -9 monit
   }
 end
 
