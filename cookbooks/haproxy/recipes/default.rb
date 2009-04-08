@@ -30,6 +30,13 @@ execute 'ensure-haproxy-is-running' do
   not_if "/etc/init.d/haproxy status | grep 'status:  started'"
 end
 
+remote_file "/etc/nginx/servers/mashtags.conf" do
+  source "mashtags.conf"
+  owner 'root'
+  group 'root'
+  mode 0644
+end
+
 execute 'restart-nginx' do
   command %Q{
     /etc/init.d/nginx restart

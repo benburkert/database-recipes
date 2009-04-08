@@ -1,7 +1,7 @@
 haproxy Mash.new unless attribute?('haproxy')
 
 haproxy[:user]        = @attribute[:users].first[:username]
-haproxy[:password]    = @attribute[:users].first[:username]
+haproxy[:password]    = @attribute[:users].first[:password]
 haproxy[:application] = @attribute[:applications].keys.first
 
 haproxy[:upstream_port] = 5000

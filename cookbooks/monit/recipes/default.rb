@@ -7,8 +7,6 @@ execute "rm-mongrel_merb.#{node[:monit][:application]}.monitrc-file" do
   command %Q{
     rm /etc/monit.d/rm-mongrel_merb.#{node[:monit][:application]}.monitrc
   }
-
-  not_if { not File.exists? "/etc/monit.d/rm-mongrel_merb.#{node[:monit][:application]}.monitrc"}
 end
 
 remote_file "/etc/monit.d/mashtags.mongrels.monitrc" do

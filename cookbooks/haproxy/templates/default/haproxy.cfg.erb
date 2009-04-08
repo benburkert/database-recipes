@@ -5,15 +5,14 @@ global
 
 defaults
   mode              http
-  timeout client    10s
-  srvtimeout        3s
+  timeout client    3s
+  timeout server    15s
   timeout connect   20ms
 
   option            httpclose
   option            abortonclose
   option            httpchk
   option            forwardfor
-
 
   balance roundrobin
 
