@@ -111,7 +111,7 @@ end
 
 execute 'telinit-q' do
   command %Q{
-    telinit -q
+    telinit q
   }
 end
 
