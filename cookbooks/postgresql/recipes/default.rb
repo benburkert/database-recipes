@@ -102,6 +102,25 @@ execute 'stop-mysql' do
   not_if "ps ax | grep mysqld | grep -v grep"
 end
 
+remote_file '/etc/inittab' do
+  source "inittab"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+execute 'telinit-q' do
+  command %Q{
+    telinit -q
+  }
+end
+
+execute 'kill-monit' do
+  command %Q{
+    monit quit
+  }
+end
+
 execute 'ensure-postgresql-is-running' do
   command %Q{
     /etc/init.d/postgresql-8.3 restart

@@ -1,5 +1,0 @@
-check process merb_mashtags_script
-  with pidfile /var/log/engineyard/mashtags/mashtags.production.script.pid
-  start program = "/data/mashtags/current/bin/start_script"
-  stop program = "/data/mashtags/current/bin/kill_script"
-  group mashtags
